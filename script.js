@@ -1,6 +1,6 @@
 var searchHistory = [];
 var weatherApiRootUrl = "https://api.openweathermap.org";
-var klabKey = "21004f2e32246f5145257d3bbabeb34c";
+// var newApiKey = "21004f2e32246f5145257d3bbabeb34c";
 
 // new key 21004f2e32246f5145257d3bbabeb34c
 // old key working: d91f911bcf2c0f925fb6535547a5ddc9
