@@ -1,12 +1,11 @@
-// Global variables
 var searchHistory = [];
 var weatherApiRootUrl = "https://api.openweathermap.org";
-var weatherApiKey = "21004f2e32246f5145257d3bbabeb34c";
+var klabKey = "21004f2e32246f5145257d3bbabeb34c";
 
 // new key 21004f2e32246f5145257d3bbabeb34c
 // old key working: d91f911bcf2c0f925fb6535547a5ddc9
 // var weatherApiOldKey = "d91f911bcf2c0f925fb6535547a5ddc9"
-
+ var klabKey = "7ab439372a6b7834b1058543aced3bee";
 // DOM element references
 var searchForm = document.querySelector("#search-form");
 var searchInput = document.querySelector("#search-input");
@@ -14,9 +13,6 @@ var todayContainer = document.querySelector("#today");
 var forecastContainer = document.querySelector("#forecast");
 var searchHistoryContainer = document.querySelector("#history");
 
-// Add timezone plugins to day.js
-dayjs.extend(window.dayjs_plugin_utc);
-dayjs.extend(window.dayjs_plugin_timezone);
 
 // Function to display the search history list.
 function renderSearchHistory() {
@@ -57,76 +53,14 @@ function initSearchHistory() {
   renderSearchHistory();
 }
 
-// Function to display the current weather data fetched from OpenWeather api.
-// function renderCurrentWeather(weather) {
-//   var date = dayjs().format("M/D/YYYY");
-
-//   // Store response data from our fetch request in variables
-//   var tempF = weather.temp;
-//   var windMph = weather.wind_speed;
-//   var humidity = weather.humidity;
-//   var uvi = weather.uvi;
-//   var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
-//   var iconDescription = weather.weather[0].description || weather[0].main;
-
-//   var card = document.createElement("div");
-//   var cardBody = document.createElement("div");
-//   var heading = document.createElement("h2");
-//   var weatherIcon = document.createElement("img");
-//   var tempEl = document.createElement("p");
-//   var windEl = document.createElement("p");
-//   var humidityEl = document.createElement("p");
-//   var uvEl = document.createElement("p");
-//   var uviBadge = document.createElement("button");
-
-//   card.setAttribute("class", "card");
-//   cardBody.setAttribute("class", "card-body");
-//   card.append(cardBody);
-
-//   heading.setAttribute("class", "h3 card-title");
-//   tempEl.setAttribute("class", "card-text");
-//   windEl.setAttribute("class", "card-text");
-//   humidityEl.setAttribute("class", "card-text");
-
-//   heading.textContent = `${city} (${date})`;
-//   weatherIcon.setAttribute("src", iconUrl);
-//   weatherIcon.setAttribute("alt", iconDescription);
-//   weatherIcon.setAttribute("class", "weather-img");
-//   heading.append(weatherIcon);
-//   tempEl.textContent = `Temp: ${tempF}°F`;
-//   windEl.textContent = `Wind: ${windMph} MPH`;
-//   humidityEl.textContent = `Humidity: ${humidity} %`;
-//   cardBody.append(heading, tempEl, windEl, humidityEl);
-
-//   uvEl.textContent = "UV Index: ";
-//   uviBadge.classList.add("btn", "btn-sm");
-
-//   if (uvi < 3) {
-//     uviBadge.classList.add("btn-success");
-//   } else if (uvi < 7) {
-//     uviBadge.classList.add("btn-warning");
-//   } else {
-//     uviBadge.classList.add("btn-danger");
-//   }
-
-//   uviBadge.textContent = uvi;
-//   uvEl.append(uviBadge);
-//   cardBody.append(uvEl);
-
-//   todayContainer.innerHTML = "";
-//   todayContainer.append(card);
-// }
-
-// Function to display a forecast card given an object from open weather api
-// daily forecast.
-
+// function to make a card for each day of the forecast
 function renderForecastCard(forecast) {
   // variables for data from api
   var unixTs = forecast.dt;
   var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
   var iconDescription = forecast.weather[0].description || forcast.weather[0].main;
   var tempF = forecast.main.temp;
-  var { humidity } = forecast.main.humidity;
+  var humidity  = forecast.main.humidity;
   var windMph = forecast.wind.speed;
 
   // Create elements for a card
@@ -164,33 +98,6 @@ function renderForecastCard(forecast) {
   forecastContainer.append(col);
 }
 
-// Function to display 5 day forecast.
-function renderForecast(dailyForecast, timezone) {
-  // Create unix timestamps for start and end of 5 day forecast
-  var startDt = dayjs().tz(timezone).add(1, "day").startOf("day").unix();
-  var endDt = dayjs().tz(timezone).add(6, "day").startOf("day").unix();
-
-  var headingCol = document.createElement("div");
-  var heading = document.createElement("h4");
-
-  headingCol.setAttribute("class", "col-12");
-  heading.textContent = "5-Day Forecast:";
-  headingCol.append(heading);
-
-  forecastContainer.innerHTML = "";
-  forecastContainer.append(headingCol);
-  for (var i = 0; i < dailyForecast.length; i++) {
-    // The api returns forecast data which may include 12pm on the same day and
-    // always includes the next 7 days. The api documentation does not provide
-    // information on the behavior for including the same day. Results may have
-    // 7 or 8 items.
-    if (dailyForecast[i].dt >= startDt && dailyForecast[i].dt < endDt) {
-      renderForecastCard(dailyForecast[i].list);
-    }
-  }
-}
-
-
 // Fetches weather data for given location from the Weather Geolocation
 // endpoint; then, calls functions to display current and forecast weather data.
 function fetchWeather(location) {
@@ -199,10 +106,10 @@ function fetchWeather(location) {
   var { name } = location;
 
   //   get the current waether, uses city name
-  var apiUrlWeather = `https://api.openweathermap.org/data/2.5/weather?appid=${weatherApiKey}&q=${name}&units=imperial`;
+  var apiUrlWeather = `https://api.openweathermap.org/data/2.5/weather?appid=${klabKey}&q=${name}&units=imperial`;
 
   //   get the forecast, uses lat/lon
-  var apiUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherApiKey}`;
+  var apiUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${klabKey}`;
 
   fetch(apiUrlWeather)
     .then(function (res) {
@@ -220,7 +127,7 @@ function fetchWeather(location) {
           return res.json();
         })
         .then(function (data) {
-          displayForecast(data);
+          displayForecast(data.list);
         })
         .catch(function (err) {
           console.error(err);
@@ -277,11 +184,27 @@ function displayCurrentWeather(data) {
 
 function displayForecast(data) {
   console.log("forecast", data);
-  
+  var headingCol = document.createElement('div');
+  var heading = document.createElement('h4');
+
+  headingCol.setAttribute('class', 'col-12');
+  heading.textContent = '4-Day Forecast:';
+  headingCol.append(heading);
+
+  forecastContainer.innerHTML = '';
+  forecastContainer.append(headingCol);
+
+  // access 0900 on each day and jump by 8 for the next day
+  for (let i = 12; i < data.length; i+=8) {
+    renderForecastCard(data[i])
+    console.log(data[i].dt_txt)
+  }
+
+
 }
 
 function fetchCoords(search) {
-  var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=1&appid=${weatherApiKey}`;
+  var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=1&appid=${klabKey}`;
 
   fetch(apiUrl)
     .then(function (res) {
@@ -326,8 +249,9 @@ function handleSearchHistoryClick(e) {
 
 
 
-
 initSearchHistory();
+
+
 searchForm.addEventListener("submit", handleSearchFormSubmit);
 searchHistoryContainer.addEventListener("click", handleSearchHistoryClick);
 
