@@ -5,14 +5,13 @@ var weatherApiRootUrl = "https://api.openweathermap.org";
 // new key 21004f2e32246f5145257d3bbabeb34c
 // old key working: d91f911bcf2c0f925fb6535547a5ddc9
 // var weatherApiOldKey = "d91f911bcf2c0f925fb6535547a5ddc9"
- var klabKey = "7ab439372a6b7834b1058543aced3bee";
+var klabKey = "7ab439372a6b7834b1058543aced3bee";
 // DOM element references
 var searchForm = document.querySelector("#search-form");
 var searchInput = document.querySelector("#search-input");
 var todayContainer = document.querySelector("#today");
 var forecastContainer = document.querySelector("#forecast");
 var searchHistoryContainer = document.querySelector("#history");
-
 
 // Function to display the search history list.
 function renderSearchHistory() {
@@ -58,9 +57,10 @@ function renderForecastCard(forecast) {
   // variables for data from api
   var unixTs = forecast.dt;
   var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
-  var iconDescription = forecast.weather[0].description || forcast.weather[0].main;
+  var iconDescription =
+    forecast.weather[0].description || forcast.weather[0].main;
   var tempF = forecast.main.temp;
-  var humidity  = forecast.main.humidity;
+  var humidity = forecast.main.humidity;
   var windMph = forecast.wind.speed;
 
   // Create elements for a card
@@ -91,7 +91,7 @@ function renderForecastCard(forecast) {
   cardTitle.textContent = dayjs.unix(unixTs).format("M/D/YYYY");
   weatherIcon.setAttribute("src", iconUrl);
   weatherIcon.setAttribute("alt", iconDescription);
-  tempEl.textContent = `Temp: ${tempF} °F`;
+  tempEl.textContent = `Temp: ${Math.round(tempF)} °F`;
   windEl.textContent = `Wind: ${windMph} MPH`;
   humidityEl.textContent = `Humidity: ${humidity} %`;
 
@@ -105,7 +105,7 @@ function fetchWeather(location) {
   var { lon } = location;
   var { name } = location;
 
-  //   get the current waether, uses city name
+  //   get the current waether now, uses city name
   var apiUrlWeather = `https://api.openweathermap.org/data/2.5/weather?appid=${klabKey}&q=${name}&units=imperial`;
 
   //   get the forecast, uses lat/lon
@@ -118,9 +118,6 @@ function fetchWeather(location) {
     .then(function (data) {
       displayCurrentWeather(data);
     })
-    .catch(function (err) {
-      console.error(err);
-    })
     .then(function () {
       fetch(apiUrlForecast)
         .then(function (res) {
@@ -129,11 +126,8 @@ function fetchWeather(location) {
         .then(function (data) {
           displayForecast(data.list);
         })
-        .catch(function (err) {
-          console.error(err);
-        });
     })
-    .catch(function (err) {
+    .catch(function (err) { 
       console.error(err);
     });
 }
@@ -144,63 +138,60 @@ function displayCurrentWeather(data) {
   var iconUrl = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
   var iconDescription = data.weather[0].description || data.weather[0].main;
 
-  var card = document.createElement('div');
-  var cardBody = document.createElement('div');
-  var heading = document.createElement('h2');
-  var weatherIcon = document.createElement('img');
-  var tempEl = document.createElement('p');
-  var windEl = document.createElement('p');
-  var humidityEl = document.createElement('p');
+  var card = document.createElement("div");
+  var cardBody = document.createElement("div");
+  var heading = document.createElement("h2");
+  var weatherIcon = document.createElement("img");
+  var tempEl = document.createElement("p");
+  var windEl = document.createElement("p");
+  var humidityEl = document.createElement("p");
 
-  var date = dayjs().format('M/D/YYYY');
+  var date = dayjs().format("M/D/YYYY");
 
   var temp = data.main.temp;
   var windSpeed = data.wind.speed;
   var humidity = data.main.humidity;
 
-  card.setAttribute('class', 'card');
-  cardBody.setAttribute('class', 'card-body');
+  card.setAttribute("class", "card");
+  cardBody.setAttribute("class", "card-body");
   card.append(cardBody);
 
-  heading.setAttribute('class', 'h3 card-title');
-  tempEl.setAttribute('class', 'card-text');
-  windEl.setAttribute('class', 'card-text');
-  humidityEl.setAttribute('class', 'card-text');
+  heading.setAttribute("class", "h3 card-title");
+  tempEl.setAttribute("class", "card-text");
+  windEl.setAttribute("class", "card-text");
+  humidityEl.setAttribute("class", "card-text");
 
   heading.textContent = `${data.name} ${date}`;
-  weatherIcon.setAttribute('src', iconUrl);
-  weatherIcon.setAttribute('alt', iconDescription);
-  weatherIcon.setAttribute('class', 'weather-img');
+  weatherIcon.setAttribute("src", iconUrl);
+  weatherIcon.setAttribute("alt", iconDescription);
+  weatherIcon.setAttribute("class", "weather-img");
   heading.append(weatherIcon);
   tempEl.textContent = `Temp: ${Math.round(temp)} °F`;
   windEl.textContent = `Wind: ${windSpeed} MPH`;
   humidityEl.textContent = `Humidity: ${humidity} %`;
   cardBody.append(heading, tempEl, windEl, humidityEl);
 
-  todayContainer.innerHTML = '';
+  todayContainer.innerHTML = "";
   todayContainer.append(card);
-
 }
 
 function displayForecast(data) {
   console.log("forecast", data);
-  var headingCol = document.createElement('div');
-  var heading = document.createElement('h4');
+  var headingCol = document.createElement("div");
+  var heading = document.createElement("h4");
 
-  headingCol.setAttribute('class', 'col-12');
-  heading.textContent = '4-Day Forecast:';
+  headingCol.setAttribute("class", "col-12");
+  heading.textContent = "4-Day Forecast:";
   headingCol.append(heading);
 
-  forecastContainer.innerHTML = '';
+  forecastContainer.innerHTML = "";
   forecastContainer.append(headingCol);
 
   // access 0900 on each day and jump by 8 for the next day
-  for (let i = 12; i < data.length; i+=8) {
-    renderForecastCard(data[i])
-    console.log(data[i].dt_txt)
+  for (let i = 11; i < data.length; i += 8) {
+    renderForecastCard(data[i]);
+    console.log(data[i].dt_txt)  // 11AM pacific time
   }
-
-
 }
 
 function fetchCoords(search) {
@@ -247,13 +238,9 @@ function handleSearchHistoryClick(e) {
   fetchCoords(search);
 }
 
-
-
 initSearchHistory();
-
 
 searchForm.addEventListener("submit", handleSearchFormSubmit);
 searchHistoryContainer.addEventListener("click", handleSearchHistoryClick);
 
 //TODO: Timezones
-//TODO: Refactor to use the forecast endpoint for current and future
