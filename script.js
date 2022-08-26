@@ -255,3 +255,5 @@ initSearchHistory();
 searchForm.addEventListener("submit", handleSearchFormSubmit);
 searchHistoryContainer.addEventListener("click", handleSearchHistoryClick);
 
+//TODO: Timezones
+//TODO: Refactor to use the forecast endpoint for current and future
