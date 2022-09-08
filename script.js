@@ -1,6 +1,8 @@
 var searchHistory = [];
 var weatherApiRootUrl = "https://api.openweathermap.org";
-// ADD YOUR KEY HERE TO MAKE THIS WORK
+
+var weatherAPIKey;   // YOUR KEY GOES HERE
+
 // DOM element references
 var searchForm = document.querySelector("#search-form");
 var searchInput = document.querySelector("#search-input");
@@ -101,10 +103,10 @@ function fetchWeather(location) {
   var { name } = location;
 
   //   get the current waether now, uses city name
-  var apiUrlWeather = `https://api.openweathermap.org/data/2.5/weather?appid=${klabKey}&q=${name}&units=imperial`;
+  var apiUrlWeather = `https://api.openweathermap.org/data/2.5/weather?appid=${weatherAPIKey}&q=${name}&units=imperial`;
 
   //   get the forecast, uses lat/lon
-  var apiUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${klabKey}`;
+  var apiUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${weatherAPIKey}`;
 
   fetch(apiUrlWeather)
     .then(function (res) {
@@ -176,7 +178,7 @@ function displayForecast(data) {
   var heading = document.createElement("h4");
 
   headingCol.setAttribute("class", "col-12");
-  heading.textContent = "4-Day Forecast:";
+  heading.textContent = "-Day Forecast:";
   headingCol.append(heading);
 
   forecastContainer.innerHTML = "";
@@ -190,7 +192,7 @@ function displayForecast(data) {
 }
 
 function fetchCoords(search) {
-  var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=1&appid=${klabKey}`;
+  var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=1&appid=${weatherAPIKey}`;
 
   fetch(apiUrl)
     .then(function (res) {
