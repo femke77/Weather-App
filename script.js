@@ -1,11 +1,6 @@
 var searchHistory = [];
 var weatherApiRootUrl = "https://api.openweathermap.org";
-// var newApiKey = "21004f2e32246f5145257d3bbabeb34c";
-
-// new key 21004f2e32246f5145257d3bbabeb34c
-// old key working: d91f911bcf2c0f925fb6535547a5ddc9
-// var weatherApiOldKey = "d91f911bcf2c0f925fb6535547a5ddc9"
-var klabKey = "7ab439372a6b7834b1058543aced3bee";
+// ADD YOUR KEY HERE TO MAKE THIS WORK
 // DOM element references
 var searchForm = document.querySelector("#search-form");
 var searchInput = document.querySelector("#search-input");
@@ -188,7 +183,7 @@ function displayForecast(data) {
   forecastContainer.append(headingCol);
 
   // access 0900 on each day and jump by 8 for the next day
-  for (let i = 11; i < data.length; i += 8) {
+  for (let i = 5; i < data.length; i += 8) {
     renderForecastCard(data[i]);
     console.log(data[i].dt_txt)  // 11AM pacific time
   }
